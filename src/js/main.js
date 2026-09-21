@@ -16,6 +16,33 @@ function setHeader() {
 
 window.addEventListener("scroll", setHeader);
 
+// ============================================= position locating ==============================================
+const navLinks = document.querySelectorAll(".navi_links a");
+
+function highlightNavigation() {
+    let current = navLinks[0];
+
+    navLinks.forEach(function (link) {
+        const section = document.querySelector(link.getAttribute("href"));
+        if (section.getBoundingClientRect().top <= header.offsetHeight + 10) {
+            current = link;
+        }
+    });
+
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+        current = navLinks[navLinks.length - 1];
+    }
+
+    navLinks.forEach(function (link) {
+        link.classList.toggle("active", link === current);
+    });
+}
+
+window.addEventListener("scroll", highlightNavigation);
+window.addEventListener("resize", highlightNavigation);
+window.addEventListener("load", highlightNavigation);
+highlightNavigation();
+
 // ============================================= gallery functions ==============================================
 const track = document.querySelector("#gallery_track");
 const viewport = document.querySelector("#gallery_viewer");

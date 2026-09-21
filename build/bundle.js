@@ -22,6 +22,28 @@ function setHeader() {
 }
 window.addEventListener("scroll", setHeader);
 
+// ============================================= position locating ==============================================
+var navLinks = document.querySelectorAll(".navi_links a");
+function highlightNavigation() {
+  var current = navLinks[0];
+  navLinks.forEach(function (link) {
+    var section = document.querySelector(link.getAttribute("href"));
+    if (section.getBoundingClientRect().top <= header.offsetHeight + 10) {
+      current = link;
+    }
+  });
+  if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+    current = navLinks[navLinks.length - 1];
+  }
+  navLinks.forEach(function (link) {
+    link.classList.toggle("active", link === current);
+  });
+}
+window.addEventListener("scroll", highlightNavigation);
+window.addEventListener("resize", highlightNavigation);
+window.addEventListener("load", highlightNavigation);
+highlightNavigation();
+
 // ============================================= gallery functions ==============================================
 var track = document.querySelector("#gallery_track");
 var viewport = document.querySelector("#gallery_viewer");
@@ -36,10 +58,9 @@ images.forEach(function (src) {
   slide.appendChild(img);
   track.appendChild(slide);
 });
-var index = 5;
+var index = 3;
 function showImage() {
-  var width = viewport.clientWidth;
-  track.style.transform = "translateX(".concat(width * 0.1 - index * width * 0.8, "px)");
+  track.className = "slide-" + index;
 }
 next.addEventListener("click", function () {
   index++;
@@ -284,9 +305,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/fonts/sarasa-regular.ttf */ "./assets/fonts/sarasa-regular.ttf"), __webpack_require__.b);
 var ___CSS_LOADER_URL_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/fonts/sarasa-bold.ttf */ "./assets/fonts/sarasa-bold.ttf"), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ../assets/wallpaper.jpg */ "./assets/wallpaper.jpg"), __webpack_require__.b);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_1___);
+var ___CSS_LOADER_URL_REPLACEMENT_2___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_2___);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `/* Your SCSS here. */
 @font-face {
@@ -316,6 +339,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Your SCSS here. */
 * {
   box-sizing: border-box;
   font-family: "Sarasa UI SC", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 header {
@@ -368,7 +396,7 @@ header {
   padding: 8px 12px;
   transition: color 0.1s, background-color 0.1s;
 }
-.navi_links a:hover, .navi_links a:focus-visible {
+.navi_links a.active, .navi_links a:hover, .navi_links a:focus-visible {
   background-color: mediumaquamarine;
   font-weight: bold;
   color: white;
@@ -431,7 +459,20 @@ header.is-scrolled .social_icons svg {
 #about #motto {
   width: 80%;
   max-width: 1080px;
-  margin: 50px auto;
+  margin: 50px auto 0;
+}
+#about #motto h1 {
+  margin-bottom: 0;
+}
+#about #reused_self_intro {
+  width: 80%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+#about #reused_self_intro img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @keyframes gradient-sway {
@@ -446,18 +487,39 @@ header.is-scrolled .social_icons svg {
 }
 #motto {
   font-weight: 700;
-  margin: 50px;
 }
 
 #video {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  height: auto;
+  min-height: 900px;
+  background-image: url(${___CSS_LOADER_URL_REPLACEMENT_2___});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 #video #osu_video {
   display: block;
+  padding-top: 25px;
+  flex-direction: column;
   width: 100%;
-  max-width: 1080px;
+  max-width: 1200px;
   height: auto;
-  margin: 0 auto;
+  max-height: 700px;
+}
+#video h1 {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding-top: 25px;
+  color: aquamarine;
 }
 
 footer {
@@ -484,7 +546,7 @@ body {
 }
 
 section {
-  padding: 50px 0;
+  padding: 35px 0;
 }
 
 #gallery {
@@ -500,6 +562,33 @@ section {
   display: flex;
   width: 100%;
   transition: transform 0.3s ease;
+}
+#gallery #gallery_track.slide-0 {
+  transform: translateX(10%);
+}
+#gallery #gallery_track.slide-1 {
+  transform: translateX(-70%);
+}
+#gallery #gallery_track.slide-2 {
+  transform: translateX(-150%);
+}
+#gallery #gallery_track.slide-3 {
+  transform: translateX(-230%);
+}
+#gallery #gallery_track.slide-4 {
+  transform: translateX(-310%);
+}
+#gallery #gallery_track.slide-5 {
+  transform: translateX(-390%);
+}
+#gallery #gallery_track.slide-6 {
+  transform: translateX(-470%);
+}
+#gallery #gallery_track.slide-7 {
+  transform: translateX(-550%);
+}
+#gallery #gallery_track.slide-8 {
+  transform: translateX(-630%);
 }
 #gallery .gallery_slides {
   flex-grow: 0;
@@ -557,11 +646,20 @@ section {
 }
 #image-preview::backdrop {
   background: rgba(0, 0, 0, 0.8);
+  animation: fade-in 0.15s;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .gallery_slides img {
   cursor: zoom-in;
-}`, "",{"version":3,"sources":["webpack://./css/main.scss"],"names":[],"mappings":"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","sourcesContent":["/* Your SCSS here. */\r\n@font-face {\r\n    font-family: 'Sarasa UI SC';\r\n    src: url('../assets/fonts/sarasa-regular.ttf') format('truetype');\r\n    font-weight: 400;\r\n    font-style: normal;\r\n    font-display: swap;\r\n}\r\n\r\n@font-face {\r\n    font-family: 'Sarasa UI SC';\r\n    src: url('../assets/fonts/sarasa-bold.ttf') format('truetype');\r\n    font-weight: 700;\r\n    font-style: normal;\r\n    font-display: swap;\r\n}\r\n\r\n@property --gradient-angle {\r\n    syntax: \"<angle>\";\r\n    inherits: false;\r\n    initial-value: 316deg;\r\n}\r\n\r\n@property --gradient-midpoint {\r\n    syntax: \"<percentage>\";\r\n    inherits: false;\r\n    initial-value: 50%;\r\n}\r\n\r\n* {\r\n    box-sizing: border-box;\r\n    font-family: 'Sarasa UI SC', sans-serif;\r\n}\r\n\r\nheader {\r\n    position: sticky;\r\n    top: 0;\r\n    width: 100%;\r\n    background-color: aquamarine;\r\n\r\n    z-index: 10;\r\n}\r\n\r\n.navi_bar {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    gap: 24px;\r\n    padding: 16px 32px;\r\n\r\n    transition: padding 0.3s ease;\r\n}\r\n\r\n.avator {\r\n    flex-shrink: 0;\r\n\r\n    img {\r\n        display: block;\r\n        width: 56px;\r\n        height: 56px;\r\n        object-fit: cover;\r\n\r\n        transition: width 0.3s ease, height 0.3s ease;\r\n    }\r\n}\r\n\r\n.title {\r\n    flex: 1;\r\n\r\n    h1 {\r\n        font-size: 34px;\r\n        transition: font-size 0.3s ease;\r\n    }\r\n}\r\n\r\n.navi_links {\r\n    display: flex;\r\n    font-size: 19px;\r\n    transition: font-size 0.3s ease;\r\n\r\n    a {\r\n        flex: 0 0 50px;\r\n        text-align: center;\r\n        color: black;\r\n        text-decoration: none;\r\n        padding: 8px 12px;\r\n        transition: color 0.1s, background-color 0.1s;\r\n\r\n        &:hover,\r\n        &:focus-visible {\r\n            background-color: mediumaquamarine;\r\n            font-weight: bold;\r\n            color: white;\r\n        }\r\n    }\r\n}\r\n\r\n.social_icons {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 10px;\r\n\r\n    a {\r\n        display: inline-flex;\r\n        align-items: center;\r\n        justify-content: center;\r\n        width: 40px;\r\n        height: 40px;\r\n        color: black;\r\n        border-radius: 50%;\r\n        text-decoration: none;\r\n        transition: color 0.2s, background-color 0.2s;\r\n\r\n        &:hover,\r\n        &:focus-visible {\r\n            color: white;\r\n            background-color: mediumaquamarine;\r\n        }\r\n\r\n    }\r\n\r\n    svg {\r\n        display: block;\r\n        width: 28px;\r\n        height: 28px;\r\n\r\n        transition: width 0.3s ease, height 0.3s ease;\r\n    }\r\n}\r\n\r\nheader.is-scrolled {\r\n    .navi_bar {\r\n        padding: 8px 32px;\r\n    }\r\n\r\n    .title h1 {\r\n        font-size: 24px;\r\n    }\r\n\r\n    .avator img {\r\n        width: 40px;\r\n        height: 40px;\r\n    }\r\n\r\n    .navi_links {\r\n        font-size: 16px;\r\n    }\r\n\r\n    .social_icons svg {\r\n        width: 24px;\r\n        height: 24px;\r\n    }\r\n}\r\n\r\n#about {\r\n    color: white;\r\n    border: none;\r\n    margin: 0;\r\n    padding: 40px 0;\r\n    width: 100%;\r\n\r\n    background: linear-gradient(var(--gradient-angle),\r\n            rgb(6, 147, 227) 0%,\r\n            var(--gradient-midpoint),\r\n            rgb(204, 129, 129) 100%);\r\n\r\n    animation: gradient-sway 8s ease-in-out infinite alternate;\r\n\r\n    #motto {\r\n        width: 80%;\r\n        max-width: 1080px;\r\n        margin: 50px auto;\r\n    }\r\n}\r\n\r\n@keyframes gradient-sway {\r\n    from {\r\n        --gradient-angle: 316deg;\r\n        --gradient-midpoint: 50%;\r\n    }\r\n\r\n    to {\r\n        --gradient-angle: 516deg;\r\n        --gradient-midpoint: 20%;\r\n    }\r\n}\r\n\r\n#motto {\r\n    font-weight: 700;\r\n    margin: 50px;\r\n}\r\n\r\n#video {\r\n    text-align: center;\r\n\r\n    #osu_video {\r\n        display: block;\r\n        width: 100%;\r\n        max-width: 1080px;\r\n        height: auto;\r\n        margin: 0 auto;\r\n    }\r\n}\r\n\r\nfooter {\r\n    #footer_grid {\r\n        width: 80%;\r\n        margin: 10px auto;\r\n        display: grid;\r\n        grid-template-columns: 1fr 1fr 1fr;\r\n    }\r\n\r\n    width: 100%;\r\n    text-align: center;\r\n    bottom: 0;\r\n    width: 100%;\r\n    background-color: aquamarine;\r\n    padding: 5px 10%;\r\n\r\n    #footer_text {\r\n        border: 10px;\r\n        border-color: black;\r\n    }\r\n\r\n    // #end_text {\r\n    //     grid-column: 1/-1;\r\n    //     margin-top: 10px;\r\n    //     margin-bottom: 0px;\r\n    //     line-height: 1.8;\r\n    // }\r\n\r\n    // #end_slogan {\r\n    //     grid-column: 1/-1;\r\n    //     margin: auto;\r\n    //     line-height: 1.8;\r\n    // }\r\n}\r\n\r\nbody {\r\n    margin: 0;\r\n}\r\n\r\nsection {\r\n    padding: 50px 0;\r\n}\r\n\r\n#gallery {\r\n    position: relative;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    text-align: center;\r\n\r\n    #gallery_viewer {\r\n        overflow: hidden;\r\n    }\r\n\r\n    #gallery_track {\r\n        display: flex;\r\n        width: 100%;\r\n        transition: transform 0.3s ease;\r\n    }\r\n\r\n    .gallery_slides {\r\n        flex-grow: 0;\r\n        flex-shrink: 0;\r\n        flex-basis: 80%;\r\n        padding: 0 8px;\r\n\r\n        img {\r\n            display: block;\r\n            width: 100%;\r\n            height: clamp(220px, 60vh, 800px);\r\n            object-fit: cover;\r\n        }\r\n    }\r\n\r\n    button {\r\n        position: absolute;\r\n\r\n        top: 50%;\r\n        transform: translateY(-50%);\r\n        width: 36px;\r\n        height: 46px;\r\n\r\n        border: none;\r\n        background-color: aquamarine;\r\n        font-size: 16px;\r\n        cursor: pointer;\r\n\r\n        transition: color 0.1s, background-color 0.1s;\r\n\r\n        &:hover,\r\n        &:focus-visible {\r\n            color: white;\r\n            background-color: mediumaquamarine;\r\n        }\r\n    }\r\n\r\n    #gallery_prev {\r\n        left: 12px;\r\n    }\r\n\r\n    #gallery_next {\r\n        right: 12px;\r\n    }\r\n}\r\n\r\n#image-preview {\r\n    max-width: 95vw;\r\n    max-height: 95vh;\r\n    padding: 12px;\r\n    border: none;\r\n\r\n    p {\r\n        text-align: center;\r\n        top: 50%;\r\n        transform: translateY(20%);\r\n    }\r\n\r\n    cursor: zoom-out;\r\n\r\n    img {\r\n        display: block;\r\n        max-width: 85vw;\r\n        max-height: 80vh;\r\n        margin: auto;\r\n    }\r\n\r\n    &::backdrop {\r\n        background: rgba(0, 0, 0, 0.8);\r\n    }\r\n}\r\n\r\n.gallery_slides img {\r\n    cursor: zoom-in;\r\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./css/main.scss"],"names":[],"mappings":"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","sourcesContent":["/* Your SCSS here. */\r\n@font-face {\r\n    font-family: 'Sarasa UI SC';\r\n    src: url('../assets/fonts/sarasa-regular.ttf') format('truetype');\r\n    font-weight: 400;\r\n    font-style: normal;\r\n    font-display: swap;\r\n}\r\n\r\n@font-face {\r\n    font-family: 'Sarasa UI SC';\r\n    src: url('../assets/fonts/sarasa-bold.ttf') format('truetype');\r\n    font-weight: 700;\r\n    font-style: normal;\r\n    font-display: swap;\r\n}\r\n\r\n@property --gradient-angle {\r\n    syntax: \"<angle>\";\r\n    inherits: false;\r\n    initial-value: 316deg;\r\n}\r\n\r\n@property --gradient-midpoint {\r\n    syntax: \"<percentage>\";\r\n    inherits: false;\r\n    initial-value: 50%;\r\n}\r\n\r\n* {\n    box-sizing: border-box;\n    font-family: 'Sarasa UI SC', sans-serif;\n}\n\nhtml {\n    scroll-behavior: smooth;\n    scroll-padding-top: 80px;\n}\n\nheader {\r\n    position: sticky;\r\n    top: 0;\r\n    width: 100%;\r\n    background-color: aquamarine;\r\n\r\n    z-index: 10;\r\n}\r\n\r\n.navi_bar {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    gap: 24px;\r\n    padding: 16px 32px;\r\n\r\n    transition: padding 0.3s ease;\r\n}\r\n\r\n.avator {\r\n    flex-shrink: 0;\r\n\r\n    img {\r\n        display: block;\r\n        width: 56px;\r\n        height: 56px;\r\n        object-fit: cover;\r\n\r\n        transition: width 0.3s ease, height 0.3s ease;\r\n    }\r\n}\r\n\r\n.title {\r\n    flex: 1;\r\n\r\n    h1 {\r\n        font-size: 34px;\r\n        transition: font-size 0.3s ease;\r\n    }\r\n}\r\n\r\n.navi_links {\r\n    display: flex;\r\n    font-size: 19px;\r\n    transition: font-size 0.3s ease;\r\n\r\n    a {\r\n        flex: 0 0 50px;\r\n        text-align: center;\r\n        color: black;\r\n        text-decoration: none;\r\n        padding: 8px 12px;\r\n        transition: color 0.1s, background-color 0.1s;\r\n\r\n        &.active,\n        &:hover,\n        &:focus-visible {\n            background-color: mediumaquamarine;\r\n            font-weight: bold;\r\n            color: white;\r\n        }\r\n    }\r\n}\r\n\r\n.social_icons {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 10px;\r\n\r\n    a {\r\n        display: inline-flex;\r\n        align-items: center;\r\n        justify-content: center;\r\n        width: 40px;\r\n        height: 40px;\r\n        color: black;\r\n        border-radius: 50%;\r\n        text-decoration: none;\r\n        transition: color 0.2s, background-color 0.2s;\r\n\r\n        &:hover,\r\n        &:focus-visible {\r\n            color: white;\r\n            background-color: mediumaquamarine;\r\n        }\r\n\r\n    }\r\n\r\n    svg {\r\n        display: block;\r\n        width: 28px;\r\n        height: 28px;\r\n\r\n        transition: width 0.3s ease, height 0.3s ease;\r\n    }\r\n}\r\n\r\nheader.is-scrolled {\r\n    .navi_bar {\r\n        padding: 8px 32px;\r\n    }\r\n\r\n    .title h1 {\r\n        font-size: 24px;\r\n    }\r\n\r\n    .avator img {\r\n        width: 40px;\r\n        height: 40px;\r\n    }\r\n\r\n    .navi_links {\r\n        font-size: 16px;\r\n    }\r\n\r\n    .social_icons svg {\r\n        width: 24px;\r\n        height: 24px;\r\n    }\r\n}\r\n\r\n#about {\r\n    color: white;\r\n    border: none;\r\n    margin: 0;\r\n    padding: 40px 0;\r\n    width: 100%;\r\n\r\n    background: linear-gradient(var(--gradient-angle),\r\n            rgb(6, 147, 227) 0%,\r\n            var(--gradient-midpoint),\r\n            rgb(204, 129, 129) 100%);\r\n\r\n    animation: gradient-sway 8s ease-in-out infinite alternate;\r\n\r\n    #motto {\n        width: 80%;\n        max-width: 1080px;\n        margin: 50px auto 0;\n\n        h1 {\n            margin-bottom: 0;\n        }\n    }\n\n    #reused_self_intro {\n        width: 80%;\n        max-width: 1080px;\n        margin: 0 auto;\n\n        img {\n            display: block;\n            width: 100%;\n            height: auto;\n        }\n    }\n}\r\n\r\n@keyframes gradient-sway {\r\n    from {\r\n        --gradient-angle: 316deg;\r\n        --gradient-midpoint: 50%;\r\n    }\r\n\r\n    to {\r\n        --gradient-angle: 516deg;\r\n        --gradient-midpoint: 20%;\r\n    }\r\n}\r\n\r\n#motto {\n    font-weight: 700;\n}\n\r\n#video {\r\n    position: relative;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n\r\n    text-align: center;\r\n    height: auto;\r\n    min-height: 900px;\r\n\r\n    #osu_video {\r\n        display: block;\r\n        padding-top: 25px;\r\n        flex-direction: column;\r\n        width: 100%;\r\n        max-width: 1200px;\r\n        height: auto;\r\n        max-height: 700px;\r\n    }\r\n\r\n    background-image: url('../assets/wallpaper.jpg');\r\n    background-size: cover;\r\n    background-position: center;\r\n    background-repeat: no-repeat;\r\n    background-attachment: fixed;\r\n\r\n    h1 {\r\n        position: absolute;\r\n        top: 40px;\r\n        left: 0;\r\n        width: 100%;\r\n        margin: 0;\r\n        padding-top: 25px;\r\n        color: aquamarine;\r\n    }\r\n}\r\n\r\nfooter {\r\n    #footer_grid {\r\n        width: 80%;\r\n        margin: 10px auto;\r\n        display: grid;\r\n        grid-template-columns: 1fr 1fr 1fr;\r\n    }\r\n\r\n    width: 100%;\r\n    text-align: center;\r\n    bottom: 0;\r\n    width: 100%;\r\n    background-color: aquamarine;\r\n    padding: 5px 10%;\r\n\r\n    #footer_text {\r\n        border: 10px;\r\n        border-color: black;\r\n    }\r\n\r\n    // #end_text {\r\n    //     grid-column: 1/-1;\r\n    //     margin-top: 10px;\r\n    //     margin-bottom: 0px;\r\n    //     line-height: 1.8;\r\n    // }\r\n\r\n    // #end_slogan {\r\n    //     grid-column: 1/-1;\r\n    //     margin: auto;\r\n    //     line-height: 1.8;\r\n    // }\r\n}\r\n\r\nbody {\r\n    margin: 0;\r\n}\r\n\r\nsection {\r\n    padding: 35px 0;\r\n}\r\n\r\n#gallery {\r\n    position: relative;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    text-align: center;\r\n\r\n    #gallery_viewer {\r\n        overflow: hidden;\r\n    }\r\n\r\n    #gallery_track {\r\n        display: flex;\r\n        width: 100%;\r\n        transition: transform 0.3s ease;\r\n    }\r\n\r\n    #gallery_track {\r\n        &.slide-0 {\r\n            transform: translateX(10%);\r\n        }\r\n\r\n        &.slide-1 {\r\n            transform: translateX(-70%);\r\n        }\r\n\r\n        &.slide-2 {\r\n            transform: translateX(-150%);\r\n        }\r\n\r\n        &.slide-3 {\r\n            transform: translateX(-230%);\r\n        }\r\n\r\n        &.slide-4 {\r\n            transform: translateX(-310%);\r\n        }\r\n\r\n        &.slide-5 {\r\n            transform: translateX(-390%);\r\n        }\r\n\r\n        &.slide-6 {\r\n            transform: translateX(-470%);\r\n        }\r\n\r\n        &.slide-7 {\r\n            transform: translateX(-550%);\r\n        }\r\n\r\n        &.slide-8 {\r\n            transform: translateX(-630%);\r\n        }\r\n    }\r\n\r\n    .gallery_slides {\r\n        flex-grow: 0;\r\n        flex-shrink: 0;\r\n        flex-basis: 80%;\r\n        padding: 0 8px;\r\n\r\n        img {\r\n            display: block;\r\n            width: 100%;\r\n            height: clamp(220px, 60vh, 800px);\r\n            object-fit: cover;\r\n        }\r\n    }\r\n\r\n    button {\r\n        position: absolute;\r\n\r\n        top: 50%;\r\n        transform: translateY(-50%);\r\n        width: 36px;\r\n        height: 46px;\r\n\r\n        border: none;\r\n        background-color: aquamarine;\r\n        font-size: 16px;\r\n        cursor: pointer;\r\n\r\n        transition: color 0.1s, background-color 0.1s;\r\n\r\n        &:hover,\r\n        &:focus-visible {\r\n            color: white;\r\n            background-color: mediumaquamarine;\r\n        }\r\n    }\r\n\r\n    #gallery_prev {\r\n        left: 12px;\r\n    }\r\n\r\n    #gallery_next {\r\n        right: 12px;\r\n    }\r\n}\r\n\r\n#image-preview {\r\n    max-width: 95vw;\r\n    max-height: 95vh;\r\n    padding: 12px;\r\n    border: none;\r\n\r\n    p {\r\n        text-align: center;\r\n        top: 50%;\r\n        transform: translateY(20%);\r\n    }\r\n\r\n    cursor: zoom-out;\r\n\r\n    img {\r\n        display: block;\r\n        max-width: 85vw;\r\n        max-height: 80vh;\r\n        margin: auto;\r\n    }\r\n\r\n    &::backdrop {\r\n        background: rgba(0, 0, 0, 0.8);\r\n        animation: fade-in 0.15s;\r\n    }\r\n\r\n    @keyframes fade-in {\r\n        from {\r\n            opacity: 0;\r\n        }\r\n\r\n        to {\r\n            opacity: 1;\r\n        }\r\n    }\r\n}\r\n\r\n.gallery_slides img {\r\n    cursor: zoom-in;\r\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -584,11 +682,13 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 
 var ___HTML_LOADER_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ./assets/avator.jpg */ "./assets/avator.jpg"), __webpack_require__.b);
-var ___HTML_LOADER_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ./assets/osu.mp4 */ "./assets/osu.mp4"), __webpack_require__.b);
+var ___HTML_LOADER_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ./assets/reused-self-intro.png */ "./assets/reused-self-intro.png"), __webpack_require__.b);
+var ___HTML_LOADER_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ./assets/osu.mp4 */ "./assets/osu.mp4"), __webpack_require__.b);
 // Module
 var ___HTML_LOADER_REPLACEMENT_0___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_0___);
 var ___HTML_LOADER_REPLACEMENT_1___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_1___);
-var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>[MP1] Ruixuan's Portfolio</title>\r\n</head>\r\n\r\n<dialog id=\"image-preview\">\r\n    <img id=\"preview-image\">\r\n    <p>Shot by Ruixuan Zhang</p>\r\n</dialog>\r\n\r\n\r\n<body>\r\n    <header>\r\n        <nav class=\"navi_bar\">\r\n            <a class=\"avator\" href=\"/\">\r\n                <img src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\">\r\n            </a>\r\n\r\n            <div class=\"title\">\r\n                <h1>Ruixuan's Portfolio</h1>\r\n            </div>\r\n\r\n            <div class=\"navi_links\">\r\n                <a href=\"#about\">About</a>\r\n                <a href=\"#gallery\">Gallery</a>\r\n                <a href=\"#video\">Video</a>\r\n\r\n            </div>\r\n            <div class=\"social_icons\">\r\n                <a href=\"https://space.bilibili.com/14677116\" target=\"_blank\" rel=\"noopener noreferrer\"\r\n                    title=\"BiliBili\">\r\n                    <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"\r\n                        stroke-linejoin=\"round\" aria-hidden=\"true\">\r\n                        <rect x=\"3\" y=\"7\" width=\"18\" height=\"14\" rx=\"3\" />\r\n                        <path d=\"M8 2l4 5 4-5 M8.5 12.5v3 M15.5 12.5v3\" />\r\n                    </svg>\r\n                </a>\r\n\r\n                <a href=\"https://github.com/Turtle233\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"GitHub\"\r\n                    title=\"GitHub\">\r\n                    <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path d=\"M12 .297C5.37.297 0 5.67 0 12.297c0 5.303\r\n                3.438 9.8 8.205 11.385.6.113.82-.258.82-.577\r\n                0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61\r\n                -.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729\r\n                1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.807 1.305\r\n                3.492.998.108-.776.418-1.305.762-1.605-2.665-.3-5.466-1.334\r\n                -5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523\r\n                .105-3.176 0 0 1.005-.322 3.3 1.23a11.5 11.5 0 0 1 3-.405\r\n                c1.02.005 2.045.138 3 .405 2.28-1.552 3.285-1.23\r\n                3.285-1.23.645 1.653.24 2.873.12 3.176.765.84\r\n                1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92\r\n                .42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015\r\n                3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592\r\n                24 12.297c0-6.627-5.373-12-12-12\" />\r\n                    </svg>\r\n                </a>\r\n\r\n                <a href=\"https://www.facebook.com/RuixuanZhang233/\" target=\"_blank\" rel=\"noopener noreferrer\"\r\n                    title=\"Facebook\">\r\n                    <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path d=\"M24 12.073C24 5.405 18.627 0 12 0S0 5.405\r\n                0 12.073c0 6.026 4.388 11.021 10.125 11.927v-8.437\r\n                H7.078v-3.49h3.047v-2.66c0-3.025 1.792-4.697\r\n                4.533-4.697 1.312 0 2.686.236 2.686.236v2.971\r\n                H15.83c-1.491 0-1.956.931-1.956 1.887v2.263\r\n                h3.328l-.532 3.49h-2.796V24C19.612 23.094\r\n                24 18.099 24 12.073z\" />\r\n                    </svg>\r\n                </a>\r\n            </div>\r\n        </nav>\r\n    </header>\r\n    <section id=\"about\">\r\n        <div id=\"motto\">\r\n            <h1>慢品人间烟火色，闲观万事岁月长。<br>Savor slowly the world’s fleeting hues,\r\n                Observe calmly as time’s tale ensues.</h1>\r\n        </div>\r\n    </section>\r\n\r\n    <section id=\"gallery\">\r\n        <div id=\"gallery_viewer\">\r\n            <div id=\"gallery_track\"></div>\r\n        </div>\r\n\r\n        <button id=\"gallery_prev\" type=\"button\">&#10094</button>\r\n        <button id=\"gallery_next\" type=\"button\">&#10095</button>\r\n    </section>\r\n\r\n    <section id=\"video\">\r\n        <h1>I play osu!</h1>\r\n        <video controls id=\"osu_video\">\r\n            <source src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\">\r\n        </video>\r\n    </section>\r\n\r\n\r\n    <footer>\r\n        <div id=\"footer_grid\">\r\n            <div id=\"footer_text\">\r\n                <h3>Course Info</h6>\r\n                    <p>Fall 2026, CS409 Web Programming MP1</p>\r\n                    <p>University of Illionis Urbana-Champaign</p>\r\n            </div>\r\n            <div id=\"contact_text\">\r\n                <h3>Contact me</h6>\r\n                    <p>Email: rz44@illinois.edu</p>\r\n                    <p>Phone: (918)-506-2859</p>\r\n            </div>\r\n            <div id=\"info_text\">\r\n                <h3>To the FUTURE</h6>\r\n                    <p id=\"end_slogan\">過去から 未来へ</p>\r\n                    <p id=\"end_text\">Designed by Ruixuan Zhang</p>\r\n            </div>\r\n            <!-- <p id=\"end_text\">Designed by Ruixuan Zhang</p>\r\n            <p id=\"end_slogan\">過去から 未来へ</p> -->\r\n        </div>\r\n    </footer>\r\n</body>\r\n\r\n</html>";
+var ___HTML_LOADER_REPLACEMENT_2___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_2___);
+var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>[MP1] Ruixuan's Portfolio</title>\r\n</head>\r\n\r\n<body>\r\n    <header>\r\n        <nav class=\"navi_bar\">\r\n            <a class=\"avator\" href=\"/\">\r\n                <img src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\">\r\n            </a>\r\n\r\n            <div class=\"title\">\r\n                <h1>Ruixuan's Portfolio</h1>\r\n            </div>\r\n\r\n            <div class=\"navi_links\">\r\n                <a href=\"#about\">About</a>\r\n                <a href=\"#gallery\">Gallery</a>\r\n                <a href=\"#video\">Video</a>\r\n\r\n            </div>\r\n            <div class=\"social_icons\">\r\n                <a href=\"https://space.bilibili.com/14677116\" target=\"_blank\" rel=\"noopener noreferrer\"\r\n                    title=\"BiliBili\">\r\n                    <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"\r\n                        stroke-linejoin=\"round\" aria-hidden=\"true\">\r\n                        <rect x=\"3\" y=\"7\" width=\"18\" height=\"14\" rx=\"3\" />\r\n                        <path d=\"M8 2l4 5 4-5 M8.5 12.5v3 M15.5 12.5v3\" />\r\n                    </svg>\r\n                </a>\r\n\r\n                <a href=\"https://github.com/Turtle233\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"GitHub\"\r\n                    title=\"GitHub\">\r\n                    <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path d=\"M12 .297C5.37.297 0 5.67 0 12.297c0 5.303\r\n                3.438 9.8 8.205 11.385.6.113.82-.258.82-.577\r\n                0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61\r\n                -.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729\r\n                1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.807 1.305\r\n                3.492.998.108-.776.418-1.305.762-1.605-2.665-.3-5.466-1.334\r\n                -5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523\r\n                .105-3.176 0 0 1.005-.322 3.3 1.23a11.5 11.5 0 0 1 3-.405\r\n                c1.02.005 2.045.138 3 .405 2.28-1.552 3.285-1.23\r\n                3.285-1.23.645 1.653.24 2.873.12 3.176.765.84\r\n                1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92\r\n                .42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015\r\n                3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592\r\n                24 12.297c0-6.627-5.373-12-12-12\" />\r\n                    </svg>\r\n                </a>\r\n\r\n                <a href=\"https://www.facebook.com/RuixuanZhang233/\" target=\"_blank\" rel=\"noopener noreferrer\"\r\n                    title=\"Facebook\">\r\n                    <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path d=\"M24 12.073C24 5.405 18.627 0 12 0S0 5.405\r\n                0 12.073c0 6.026 4.388 11.021 10.125 11.927v-8.437\r\n                H7.078v-3.49h3.047v-2.66c0-3.025 1.792-4.697\r\n                4.533-4.697 1.312 0 2.686.236 2.686.236v2.971\r\n                H15.83c-1.491 0-1.956.931-1.956 1.887v2.263\r\n                h3.328l-.532 3.49h-2.796V24C19.612 23.094\r\n                24 18.099 24 12.073z\" />\r\n                    </svg>\r\n                </a>\r\n            </div>\r\n        </nav>\r\n    </header>\r\n\r\n    <section id=\"about\">\r\n        <div id=\"motto\">\r\n            <h1>慢品人间烟火色，闲观万事岁月长。<br>Savor slowly the world’s fleeting hues,\r\n                Observe calmly as time’s tale ensues.</h1>\r\n        </div>\r\n\r\n        <div id=\"reused_self_intro\">\n            <img src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\" alt=\"Ruixuan Zhang's self introduction\">\n        </div>\n    </section>\r\n\r\n    <section id=\"gallery\">\r\n        <div id=\"gallery_viewer\">\r\n            <div id=\"gallery_track\"></div>\r\n        </div>\r\n\r\n        <button id=\"gallery_prev\" type=\"button\">&#10094</button>\r\n        <button id=\"gallery_next\" type=\"button\">&#10095</button>\r\n    </section>\r\n\r\n    <section id=\"video\">\r\n        <h1>PLAY osu! WITH ME!</h1>\r\n        <video controls id=\"osu_video\">\r\n            <source src=\"" + ___HTML_LOADER_REPLACEMENT_2___ + "\">\r\n        </video>\r\n    </section>\r\n\r\n\r\n    <footer>\r\n        <div id=\"footer_grid\">\r\n            <div id=\"footer_text\">\r\n                <h3>Course Info</h3>\r\n                <p>Fall 2026, CS409 Web Programming MP1</p>\r\n                <p>University of Illionis Urbana-Champaign</p>\r\n            </div>\r\n            <div id=\"contact_text\">\r\n                <h3>Contact me</h3>\r\n                <p>Email: rz44@illinois.edu</p>\r\n                <p>Phone: (918)-506-2859</p>\r\n            </div>\r\n            <div id=\"info_text\">\r\n                <h3>To the FUTURE</h3>\r\n                <p id=\"end_slogan\">過去から 未来へ</p>\r\n                <p id=\"end_text\">Designed by Ruixuan Zhang</p>\r\n            </div>\r\n        </div>\r\n    </footer>\r\n\r\n    <dialog id=\"image-preview\">\r\n        <img id=\"preview-image\">\r\n        <p>Shot by Ruixuan Zhang</p>\r\n    </dialog>\r\n</body>\r\n\r\n</html>\n";
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
 
@@ -963,6 +1063,28 @@ module.exports = __webpack_require__.p + "9c53b8248aa656439425.ttf";
 
 "use strict";
 module.exports = __webpack_require__.p + "8d14b4f4d7e939717b97.ttf";
+
+/***/ },
+
+/***/ "./assets/reused-self-intro.png"
+/*!**************************************!*\
+  !*** ./assets/reused-self-intro.png ***!
+  \**************************************/
+(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "38196b7c42667de7b4b8.png";
+
+/***/ },
+
+/***/ "./assets/wallpaper.jpg"
+/*!******************************!*\
+  !*** ./assets/wallpaper.jpg ***!
+  \******************************/
+(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "ca124f153bb057811718.jpg";
 
 /***/ }
 

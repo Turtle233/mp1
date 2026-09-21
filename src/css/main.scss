@@ -32,6 +32,11 @@
     font-family: 'Sarasa UI SC', sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
 header {
     position: sticky;
     top: 0;
@@ -86,6 +91,7 @@ header {
         padding: 8px 12px;
         transition: color 0.1s, background-color 0.1s;
 
+        &.active,
         &:hover,
         &:focus-visible {
             background-color: mediumaquamarine;
@@ -164,12 +170,28 @@ header.is-scrolled {
             var(--gradient-midpoint),
             rgb(204, 129, 129) 100%);
 
-    animation: gradient-sway 8s ease-in-out infinite alternate;
+    animation: gradient-sway 7s ease-in-out infinite alternate;
 
     #motto {
         width: 80%;
         max-width: 1080px;
-        margin: 50px auto;
+        margin: 50px auto 0;
+
+        h1 {
+            margin-bottom: 0;
+        }
+    }
+
+    #reused_self_intro {
+        width: 80%;
+        max-width: 1140px;
+        margin: 0 auto;
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
     }
 }
 
@@ -187,7 +209,6 @@ header.is-scrolled {
 
 #motto {
     font-weight: 700;
-    margin: 50px;
 }
 
 #video {
