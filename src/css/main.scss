@@ -1,4 +1,6 @@
 /* Your SCSS here. */
+$theme-color: aquamarine;
+
 @font-face {
     font-family: 'Sarasa UI SC';
     src: url('../assets/fonts/sarasa-regular.ttf') format('truetype');
@@ -41,7 +43,7 @@ header {
     position: sticky;
     top: 0;
     width: 100%;
-    background-color: aquamarine;
+    background-color: $theme-color;
 
     z-index: 10;
 }
@@ -244,7 +246,7 @@ header.is-scrolled {
         width: 100%;
         margin: 0;
         padding-top: 25px;
-        color: aquamarine;
+        color: $theme-color;
     }
 }
 
@@ -260,7 +262,7 @@ footer {
     text-align: center;
     bottom: 0;
     width: 100%;
-    background-color: aquamarine;
+    background-color: $theme-color;
     padding: 5px 10%;
 
     #footer_text {
@@ -367,7 +369,7 @@ section {
         height: 46px;
 
         border: none;
-        background-color: aquamarine;
+        background-color: $theme-color;
         font-size: 16px;
         cursor: pointer;
 
