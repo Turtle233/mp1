@@ -1,1 +1,410 @@
 /* Your SCSS here. */
+@font-face {
+    font-family: 'Sarasa UI SC';
+    src: url('../assets/fonts/sarasa-regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sarasa UI SC';
+    src: url('../assets/fonts/sarasa-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@property --gradient-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 316deg;
+}
+
+@property --gradient-midpoint {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 50%;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Sarasa UI SC', sans-serif;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: aquamarine;
+
+    z-index: 10;
+}
+
+.navi_bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 32px;
+
+    transition: padding 0.3s ease;
+}
+
+.avator {
+    flex-shrink: 0;
+
+    img {
+        display: block;
+        width: 56px;
+        height: 56px;
+        object-fit: cover;
+
+        transition: width 0.3s ease, height 0.3s ease;
+    }
+}
+
+.title {
+    flex: 1;
+
+    h1 {
+        font-size: 34px;
+        transition: font-size 0.3s ease;
+    }
+}
+
+.navi_links {
+    display: flex;
+    font-size: 19px;
+    transition: font-size 0.3s ease;
+
+    a {
+        flex: 0 0 50px;
+        text-align: center;
+        color: black;
+        text-decoration: none;
+        padding: 8px 12px;
+        transition: color 0.1s, background-color 0.1s;
+
+        &:hover,
+        &:focus-visible {
+            background-color: mediumaquamarine;
+            font-weight: bold;
+            color: white;
+        }
+    }
+}
+
+.social_icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        color: black;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: color 0.2s, background-color 0.2s;
+
+        &:hover,
+        &:focus-visible {
+            color: white;
+            background-color: mediumaquamarine;
+        }
+
+    }
+
+    svg {
+        display: block;
+        width: 28px;
+        height: 28px;
+
+        transition: width 0.3s ease, height 0.3s ease;
+    }
+}
+
+header.is-scrolled {
+    .navi_bar {
+        padding: 8px 32px;
+    }
+
+    .title h1 {
+        font-size: 24px;
+    }
+
+    .avator img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navi_links {
+        font-size: 16px;
+    }
+
+    .social_icons svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+#about {
+    color: white;
+    border: none;
+    margin: 0;
+    padding: 40px 0;
+    width: 100%;
+
+    background: linear-gradient(var(--gradient-angle),
+            rgb(6, 147, 227) 0%,
+            var(--gradient-midpoint),
+            rgb(204, 129, 129) 100%);
+
+    animation: gradient-sway 8s ease-in-out infinite alternate;
+
+    #motto {
+        width: 80%;
+        max-width: 1080px;
+        margin: 50px auto;
+    }
+}
+
+@keyframes gradient-sway {
+    from {
+        --gradient-angle: 316deg;
+        --gradient-midpoint: 50%;
+    }
+
+    to {
+        --gradient-angle: 516deg;
+        --gradient-midpoint: 20%;
+    }
+}
+
+#motto {
+    font-weight: 700;
+    margin: 50px;
+}
+
+#video {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    height: auto;
+    min-height: 900px;
+
+    #osu_video {
+        display: block;
+        padding-top: 25px;
+        flex-direction: column;
+        width: 100%;
+        max-width: 1200px;
+        height: auto;
+        max-height: 700px;
+    }
+
+    background-image: url('../assets/wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    h1 {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding-top: 25px;
+        color: aquamarine;
+    }
+}
+
+footer {
+    #footer_grid {
+        width: 80%;
+        margin: 10px auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    background-color: aquamarine;
+    padding: 5px 10%;
+
+    #footer_text {
+        border: 10px;
+        border-color: black;
+    }
+
+    // #end_text {
+    //     grid-column: 1/-1;
+    //     margin-top: 10px;
+    //     margin-bottom: 0px;
+    //     line-height: 1.8;
+    // }
+
+    // #end_slogan {
+    //     grid-column: 1/-1;
+    //     margin: auto;
+    //     line-height: 1.8;
+    // }
+}
+
+body {
+    margin: 0;
+}
+
+section {
+    padding: 35px 0;
+}
+
+#gallery {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+
+    #gallery_viewer {
+        overflow: hidden;
+    }
+
+    #gallery_track {
+        display: flex;
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    #gallery_track {
+        &.slide-0 {
+            transform: translateX(10%);
+        }
+
+        &.slide-1 {
+            transform: translateX(-70%);
+        }
+
+        &.slide-2 {
+            transform: translateX(-150%);
+        }
+
+        &.slide-3 {
+            transform: translateX(-230%);
+        }
+
+        &.slide-4 {
+            transform: translateX(-310%);
+        }
+
+        &.slide-5 {
+            transform: translateX(-390%);
+        }
+
+        &.slide-6 {
+            transform: translateX(-470%);
+        }
+
+        &.slide-7 {
+            transform: translateX(-550%);
+        }
+
+        &.slide-8 {
+            transform: translateX(-630%);
+        }
+    }
+
+    .gallery_slides {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 80%;
+        padding: 0 8px;
+
+        img {
+            display: block;
+            width: 100%;
+            height: clamp(220px, 60vh, 800px);
+            object-fit: cover;
+        }
+    }
+
+    button {
+        position: absolute;
+
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 46px;
+
+        border: none;
+        background-color: aquamarine;
+        font-size: 16px;
+        cursor: pointer;
+
+        transition: color 0.1s, background-color 0.1s;
+
+        &:hover,
+        &:focus-visible {
+            color: white;
+            background-color: mediumaquamarine;
+        }
+    }
+
+    #gallery_prev {
+        left: 12px;
+    }
+
+    #gallery_next {
+        right: 12px;
+    }
+}
+
+#image-preview {
+    max-width: 95vw;
+    max-height: 95vh;
+    padding: 12px;
+    border: none;
+
+    p {
+        text-align: center;
+        top: 50%;
+        transform: translateY(20%);
+    }
+
+    cursor: zoom-out;
+
+    img {
+        display: block;
+        max-width: 85vw;
+        max-height: 80vh;
+        margin: auto;
+    }
+
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.8);
+        animation: fade-in 0.15s;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+.gallery_slides img {
+    cursor: zoom-in;
+}
